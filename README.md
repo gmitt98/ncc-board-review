@@ -12,6 +12,8 @@
   *Answer & explanation*, which ends with the textbook chapter and page reference. Filter by
   difficulty, search, jump by chapter. Your answers are stored in your browser only.
 - `audio.html` — the audio review with chapter jump points; `audio/transcript.md` is the script.
+- `downloads/` — printable PDFs (with explanations, and test mode with answer key) and a Word
+  version; all linked from the site's **Downloads** menu.
 - `data/questions.json` — the question bank (chapter, topic, difficulty, stem, options,
   answer, explanation, book pages). Load it into Anki or anything else.
 
