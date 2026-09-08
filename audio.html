@@ -5,37 +5,71 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Audio review · Neurocritical Care Board Review</title>
 <style>
-:root{--bg:#f7f7f5;--card:#fff;--ink:#1a1a1a;--muted:#666;--line:#e2e2de;--accent:#2b6cb0}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#141517;--card:#1e2023;--ink:#e8e8e6;--muted:#9a9a96;--line:#33363b;--accent:#7fb3f0}}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+:root{--bg:#f7f7f5;--card:#fff;--ink:#1a1a1a;--muted:#666;--line:#e2e2de;--accent:#2b6cb0;--summary:#f0f4fa;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#141517;--card:#1e2023;--ink:#e8e8e6;--muted:#9a9a96;--line:#33363b;--accent:#7fb3f0;--summary:#242a34;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#141517;--card:#1e2023;--ink:#e8e8e6;--muted:#9a9a96;--line:#33363b;--accent:#7fb3f0;--summary:#242a34;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
 .wrap{max-width:820px;margin:0 auto;padding:24px 16px}
 a{color:var(--accent)}
-audio{width:100%;margin:12px 0 20px}
+audio{width:100%;margin:12px 0 8px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px}
-h1{font-size:22px;margin:0 0 6px}
-.muted{color:var(--muted);font-size:14px}
-ol{padding-left:22px;columns:2;column-gap:32px}
+h1{font-size:1.4rem;margin:0 0 6px}
+.muted{color:var(--muted);font-size:.875rem}
+.voices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 4px}
+.voice{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--card);cursor:pointer;text-align:left;color:var(--ink);font:inherit}
+.voice:hover{border-color:var(--accent)}
+.voice.active{border-color:var(--accent);background:var(--summary);box-shadow:inset 0 0 0 1px var(--accent)}
+.voice strong{display:block}
+.voice span{color:var(--muted);font-size:.85rem}
+.dl{display:flex;gap:14px;flex-wrap:wrap;font-size:.9rem;margin:6px 0 18px}
+ol{padding-left:22px;columns:2;column-gap:32px;margin:8px 0 0}
 ol li{margin:3px 0;break-inside:avoid}
 ol button{background:none;border:none;color:var(--accent);cursor:pointer;font:inherit;text-align:left;padding:0}
-@media (max-width:600px){ol{columns:1}}
-:root[data-theme=dark]{--bg:#141517;--card:#1e2023;--ink:#e8e8e6;--muted:#9a9a96;--line:#33363b;--accent:#7fb3f0}
+@media (max-width:600px){ol{columns:1}.voices{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <p><a href="index.html">← Questions</a></p>
   <h1>High-yield audio review</h1>
-  <p class="muted">About an hour, 22 chapters. Built from <em>The Practice of Neurocritical Care</em>, 2nd ed. Text-to-speech narration. <a href="audio/transcript.md">Transcript</a> · <a href="audio/ncc_audio_summary.m4a" download>Download M4A</a></p>
-  <audio id="a" controls preload="metadata" src="audio/ncc_audio_summary.m4a"></audio>
+  <p class="muted">About 80 minutes in 22 chapters, built from <em>The Practice of Neurocritical Care</em>, 2nd ed. Neural text-to-speech narration (Kokoro). Pick a narrator; your choice and position are kept when you switch.</p>
+  <div class="voices" role="radiogroup" aria-label="Narrator">
+    <button class="voice" data-v="bella" role="radio"><strong>Bella</strong><span>American English, female</span></button>
+    <button class="voice" data-v="michael" role="radio"><strong>Michael</strong><span>American English, male</span></button>
+  </div>
+  <audio id="a" controls preload="metadata"></audio>
+  <p class="dl"><a id="dl" href="#" download>Download this narration (M4A with chapter markers)</a> <a href="audio/transcript.md" download>Transcript (Markdown)</a></p>
   <div class="card">
     <strong>Chapters</strong> <span class="muted">(click to jump)</span>
     <ol id="ch"></ol>
   </div>
 </div>
 <script>
-(function(){try{const t=localStorage.getItem("ncc-theme");if(t&&t!=="auto")document.documentElement.setAttribute("data-theme",t);const z=parseInt(localStorage.getItem("ncc-zoom")||"100",10);if(z&&z!==100)document.documentElement.style.fontSize=z+"%";}catch(e){}})();
-const a=document.getElementById('a'), ol=document.getElementById('ch');
-fetch('audio/chapters.json').then(r=>r.json()).then(chs=>{chs.forEach(c=>{const m=Math.floor(c.start/60),s=Math.round(c.start%60);const li=document.createElement('li');const b=document.createElement('button');b.textContent=c.title+' · '+m+':'+String(s).padStart(2,'0');b.onclick=()=>{a.currentTime=c.start;a.play()};li.appendChild(b);ol.appendChild(li)});});
+(function(){
+  try{const t=localStorage.getItem("ncc-theme");if(t&&t!=="auto")document.documentElement.setAttribute("data-theme",t);const z=parseInt(localStorage.getItem("ncc-zoom")||"100",10);if(z&&z!==100)document.documentElement.style.fontSize=z+"%";}catch(e){}
+  const FILES={bella:"audio/ncc_audio_summary_bella.m4a",michael:"audio/ncc_audio_summary_michael.m4a"};
+  const CHAPTERS={bella:"audio/chapters_bella.json",michael:"audio/chapters_michael.json"};
+  const a=document.getElementById('a'), ol=document.getElementById('ch'), dl=document.getElementById('dl');
+  let voice; try{voice=localStorage.getItem('ncc-voice')}catch(e){}
+  if(!FILES[voice]) voice='bella';
+  function load(v,keepTime){
+    const t=keepTime?a.currentTime:0, playing=keepTime&&!a.paused;
+    voice=v; try{localStorage.setItem('ncc-voice',v)}catch(e){}
+    document.querySelectorAll('.voice').forEach(b=>{const on=b.dataset.v===v;b.classList.toggle('active',on);b.setAttribute('aria-checked',on)});
+    a.src=FILES[v]; dl.href=FILES[v];
+    a.addEventListener('loadedmetadata',()=>{ if(t) a.currentTime=Math.min(t,a.duration-1); if(playing) a.play(); },{once:true});
+    ol.innerHTML='';
+    fetch(CHAPTERS[v]).then(r=>r.json()).then(chs=>chs.forEach(c=>{
+      const m=Math.floor(c.start/60), s=Math.round(c.start%60);
+      const li=document.createElement('li'), b=document.createElement('button');
+      b.textContent=`${c.title} · ${m}:${String(s).padStart(2,'0')}`;
+      b.onclick=()=>{a.currentTime=c.start;a.play()};
+      li.appendChild(b); ol.appendChild(li);
+    })).catch(()=>{ol.innerHTML='<li>Chapter list unavailable.</li>'});
+  }
+  document.querySelectorAll('.voice').forEach(b=>b.onclick=()=>{ if(b.dataset.v!==voice) load(b.dataset.v,true) });
+  load(voice,false);
+})();
 </script>
 </body>
 </html>

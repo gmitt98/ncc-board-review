@@ -1,8 +1,8 @@
 # Neurocritical Care Board Review
 
 250 single-best-answer practice questions with explanations, written to the content of
-*The Practice of Neurocritical Care*, 2nd Edition (Neurocritical Care Society, 2021), plus a
-63-minute high-yield audio review.
+*The Practice of Neurocritical Care*, 2nd Edition (Neurocritical Care Society, 2021), plus an
+80-minute high-yield audio review in a choice of two narrators.
 
 **Site:** https://gmitt98.github.io/ncc-board-review/
 
@@ -11,7 +11,8 @@
 - `index.html` — all questions on one page. Click an option to check it, or expand
   *Answer & explanation*, which ends with the textbook chapter and page reference. Filter by
   difficulty, search, jump by chapter. Your answers are stored in your browser only.
-- `audio.html` — the audio review with chapter jump points; `audio/transcript.md` is the script.
+- `audio.html` — the audio review with a choice of two Kokoro neural voices (Bella, Michael), chapter
+  jump points, and per-voice download; `audio/transcript.md` is the script.
 - `downloads/` — printable PDFs (with explanations, and test mode with answer key) and a Word
   version; all linked from the site's **Downloads** menu.
 - `data/questions.json` — the question bank (chapter, topic, difficulty, stem, options,
@@ -24,6 +25,15 @@ can check the source in your own copy. The book itself is not included.
 
 ```bash
 python3 scripts/build_site.py
+```
+
+## Re-rendering the audio
+
+```bash
+/opt/homebrew/bin/python3.12 -m venv .venv && .venv/bin/pip install kokoro soundfile
+brew install espeak-ng   # fallback pronunciation for unusual words
+.venv/bin/python scripts/render_audio_kokoro.py --voice af_bella  --out audio/ncc_audio_summary_bella.m4a   --chapters audio/chapters_bella.json
+.venv/bin/python scripts/render_audio_kokoro.py --voice am_michael --out audio/ncc_audio_summary_michael.m4a --chapters audio/chapters_michael.json
 ```
 
 ## How it was made
