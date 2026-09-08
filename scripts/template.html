@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neurocritical Care Board Review</title>
+<meta name="description" content="250 board-style practice questions with expandable answers and explanations, keyed to The Practice of Neurocritical Care, 2nd ed.">
+<style>
+:root{--bg:#f7f7f5;--card:#fff;--ink:#1a1a1a;--muted:#666;--line:#e2e2de;--accent:#2b6cb0;--ok:#2f855a;--ok-bg:#e9f7ee;--bad:#c53030;--bad-bg:#fdecec;--summary:#f0f4fa}
+@media (prefers-color-scheme:dark){:root{--bg:#141517;--card:#1e2023;--ink:#e8e8e6;--muted:#9a9a96;--line:#33363b;--accent:#7fb3f0;--ok:#6fcf97;--ok-bg:#1d3327;--bad:#f28b8b;--bad-bg:#3a2222;--summary:#242a34}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+.top{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.top h1{font-size:17px;margin:0;flex:1 1 220px}
+.top input[type=search]{flex:1 1 200px;max-width:340px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:14px}
+.top select,.top button,.tool{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:14px;cursor:pointer}
+.score{font-size:13px;color:var(--muted);white-space:nowrap}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:24px;max-width:1240px;margin:0 auto;padding:20px 16px}
+nav.side{position:sticky;top:62px;align-self:start;max-height:calc(100vh - 80px);overflow:auto;font-size:13.5px}
+nav.side ul{list-style:none;margin:0;padding:0}
+nav.side li{display:flex;justify-content:space-between;gap:8px;padding:4px 6px;border-radius:6px}
+nav.side li a{text-decoration:none;color:var(--ink)}
+nav.side li:hover{background:var(--card)}
+.nav-sec{font-weight:600;color:var(--muted);text-transform:uppercase;font-size:11px;letter-spacing:.04em;margin-top:12px}
+.nav-n{color:var(--muted);font-variant-numeric:tabular-nums}
+main{min-width:0}
+.intro{color:var(--muted);font-size:14px;margin:0 0 18px}
+h2.chapter{font-size:20px;margin:36px 0 14px;padding-bottom:6px;border-bottom:2px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.chapter-pages{font-size:13px;color:var(--muted);font-weight:400}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.q.hidden{display:none}
+.q header{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.qnum{font-weight:700}
+.tags{font-size:12.5px;color:var(--muted)}
+.diff{font-style:normal;padding:1px 7px;border-radius:10px;border:1px solid var(--line);margin-left:6px}
+.diff-hard{border-color:var(--bad);color:var(--bad)}.diff-easy{border-color:var(--ok);color:var(--ok)}
+.stem{margin:6px 0 12px}
+.opts{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.opt{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt .letter{font-weight:700;min-width:1.2em}
+.q.done .opt{cursor:default}
+.q.done .opt.correct{background:var(--ok-bg);border-color:var(--ok)}
+.q.done .opt.wrong{background:var(--bad-bg);border-color:var(--bad)}
+details.answer{margin-top:12px;border-top:1px dashed var(--line);padding-top:8px}
+details.answer summary{cursor:pointer;font-weight:600;color:var(--accent);padding:6px 8px;border-radius:6px;background:var(--summary);display:inline-block}
+.ans-line{margin:10px 0 6px}
+.expl{margin:0 0 8px;white-space:pre-line}
+.keypoint{background:var(--summary);padding:8px 12px;border-radius:8px;margin:8px 0}
+.src{font-size:13px;color:var(--muted);margin:6px 0 0}
+.book-link{text-decoration:none;border-bottom:1px dotted var(--accent)}
+footer{max-width:1240px;margin:40px auto;padding:0 16px;color:var(--muted);font-size:13px}
+@media (max-width:860px){.layout{grid-template-columns:1fr}nav.side{position:static;max-height:none;display:none}nav.side.open{display:block}.menu{display:inline-block}}
+.menu{display:none}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>Neurocritical Care Board Review <span style="color:var(--muted);font-weight:400">· {{COUNT}} questions</span></h1>
+  <button class="menu tool" id="menu">Chapters</button>
+  <input type="search" id="search" placeholder="Search questions…" aria-label="Search questions">
+  <select id="diff" aria-label="Difficulty"><option value="">All difficulties</option><option>easy</option><option>moderate</option><option>hard</option></select>
+  <button id="showall">Show all answers</button>
+  <button id="hideall">Hide all</button>
+  <span class="score" id="score"></span>
+  <button id="reset" title="Clear your recorded answers">Reset</button>
+  <a class="tool" href="audio.html" style="text-decoration:none">Audio review</a>
+</div>
+<div class="layout">
+  <nav class="side" id="side"><ul>{{NAV}}</ul></nav>
+  <main>
+    <p class="intro">Single-best-answer questions written to the content of <em>The Practice of Neurocritical Care</em>, 2nd Edition (Neurocritical Care Society, 2021). Click an option to check it, or open <strong>Answer &amp; explanation</strong>. Each explanation links to the book page it is drawn from. Your answers are saved in this browser only.</p>
+    {{CARDS}}
+  </main>
+</div>
+<footer>Questions and explanations were generated from the textbook and independently re-checked against it; the textbook remains the authority. Not affiliated with the Neurocritical Care Society. <a href="https://github.com/gmitt98/ncc-board-review">Source</a>.</footer>
+<script>
+(function(){
+  const KEY='ncc-answers-v1';
+  let state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){state={}}
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};
+  const cards=[...document.querySelectorAll('.q')];
+  function mark(card,letter){
+    const ans=card.dataset.ans;
+    card.classList.add('done');
+    card.querySelectorAll('.opt').forEach(b=>{
+      b.classList.toggle('correct',b.dataset.l===ans);
+      b.classList.toggle('wrong',b.dataset.l===letter&&letter!==ans);
+    });
+    card.querySelector('details').open=true;
+  }
+  function score(){
+    const vals=Object.values(state);
+    const right=cards.filter(c=>state[c.dataset.n]===c.dataset.ans).length;
+    document.getElementById('score').textContent=vals.length?`Answered ${vals.length} · Correct ${right} (${Math.round(100*right/vals.length)}%)`:'';
+  }
+  cards.forEach(card=>{
+    const n=card.dataset.n;
+    if(state[n]) mark(card,state[n]);
+    card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+      if(card.classList.contains('done')) return;
+      state[n]=b.dataset.l; save(); mark(card,b.dataset.l); score();
+    }));
+  });
+  score();
+  document.getElementById('reset').onclick=()=>{ if(!confirm('Clear all recorded answers?')) return; state={}; save();
+    cards.forEach(c=>{c.classList.remove('done');c.querySelectorAll('.opt').forEach(b=>b.classList.remove('correct','wrong'));c.querySelector('details').open=false}); score(); };
+  document.getElementById('showall').onclick=()=>cards.forEach(c=>{if(!c.classList.contains('hidden'))c.querySelector('details').open=true});
+  document.getElementById('hideall').onclick=()=>cards.forEach(c=>c.querySelector('details').open=false);
+  const search=document.getElementById('search'), diff=document.getElementById('diff');
+  function filter(){
+    const t=search.value.trim().toLowerCase(), d=diff.value;
+    cards.forEach(c=>{
+      const hit=(!t||c.textContent.toLowerCase().includes(t))&&(!d||c.dataset.diff===d);
+      c.classList.toggle('hidden',!hit);
+    });
+    document.querySelectorAll('h2.chapter').forEach(h=>{
+      let el=h.nextElementSibling, any=false;
+      while(el&&el.tagName!=='H2'){ if(!el.classList.contains('hidden')) any=true; el=el.nextElementSibling; }
+      h.style.display=any?'':'none';
+    });
+  }
+  search.addEventListener('input',filter); diff.addEventListener('change',filter);
+  document.getElementById('menu').onclick=()=>document.getElementById('side').classList.toggle('open');
+  document.querySelectorAll('nav.side a').forEach(a=>a.addEventListener('click',()=>document.getElementById('side').classList.remove('open')));
+})();
+</script>
+</body>
+</html>
