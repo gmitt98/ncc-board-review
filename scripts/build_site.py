@@ -14,11 +14,6 @@ def esc(s):
     return html.escape(str(s or ""))
 
 
-def first_page(pages):
-    m = re.search(r"\d+", str(pages))
-    return int(m.group()) if m else None
-
-
 def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
 
@@ -46,9 +41,8 @@ for i, q in enumerate(qs, 1):
         cur = q["chapter"]
         meta = next(c for c in chapters if c["title"] == cur)
         cards.append(f'<h2 class="chapter" id="{slug(cur)}">{esc(cur)}<span class="chapter-pages">book pp. {meta["start"]}–{meta["end"]}</span></h2>')
-    p = first_page(q.get("pages"))
-    page_link = (f'<a class="book-link" href="book.html?p={p}" title="Open book page {p}">'
-                 f'Book: {esc(q["chapter"])}, p. {esc(q.get("pages"))}</a>') if p else esc(q.get("pages"))
+    pg = str(q.get("pages", ""))
+    ref = f'<span class="ref">Reference: <em>The Practice of Neurocritical Care</em>, 2nd ed., {esc(q["chapter"])}, {"pp." if re.search(r"[-,]", pg) else "p."} {esc(pg)}</span>'
     opts = "".join(
         f'<li><button class="opt" data-l="{L}"><span class="letter">{L}</span><span>{esc(q["options"][L])}</span></button></li>'
         for L in "ABCDE")
@@ -63,7 +57,7 @@ for i, q in enumerate(qs, 1):
     <summary>Answer &amp; explanation</summary>
     <p class="ans-line"><strong>Answer: {q["answer"]}.</strong> {esc(q["options"][q["answer"]])}</p>
     <p class="expl">{expl}</p>
-    <p class="src">{page_link}</p>
+    <p class="src">{ref}</p>
   </details>
 </article>''')
 
