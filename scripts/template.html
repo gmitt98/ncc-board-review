@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Neurocritical Care Board Review</title>
-<meta name="description" content="250 board-style practice questions with expandable answers and explanations, keyed to The Practice of Neurocritical Care, 2nd ed.">
+<meta name="description" content="250 board-style practice questions with expandable answers, explanations, and textbook page references, keyed to The Practice of Neurocritical Care, 2nd ed.">
 <style>
 :root{--bg:#f7f7f5;--card:#fff;--ink:#1a1a1a;--muted:#666;--line:#e2e2de;--accent:#2b6cb0;--ok:#2f855a;--ok-bg:#e9f7ee;--bad:#c53030;--bad-bg:#fdecec;--summary:#f0f4fa}
 @media (prefers-color-scheme:dark){:root{--bg:#141517;--card:#1e2023;--ink:#e8e8e6;--muted:#9a9a96;--line:#33363b;--accent:#7fb3f0;--ok:#6fcf97;--ok-bg:#1d3327;--bad:#f28b8b;--bad-bg:#3a2222;--summary:#242a34}}
@@ -49,7 +49,6 @@ details.answer summary{cursor:pointer;font-weight:600;color:var(--accent);paddin
 .expl{margin:0 0 8px;white-space:pre-line}
 .keypoint{background:var(--summary);padding:8px 12px;border-radius:8px;margin:8px 0}
 .src{font-size:13px;color:var(--muted);margin:6px 0 0}
-.book-link{text-decoration:none;border-bottom:1px dotted var(--accent)}
 footer{max-width:1240px;margin:40px auto;padding:0 16px;color:var(--muted);font-size:13px}
 @media (max-width:860px){.layout{grid-template-columns:1fr}nav.side{position:static;max-height:none;display:none}nav.side.open{display:block}.menu{display:inline-block}}
 .menu{display:none}
@@ -70,7 +69,7 @@ footer{max-width:1240px;margin:40px auto;padding:0 16px;color:var(--muted);font-
 <div class="layout">
   <nav class="side" id="side"><ul>{{NAV}}</ul></nav>
   <main>
-    <p class="intro">Single-best-answer questions written to the content of <em>The Practice of Neurocritical Care</em>, 2nd Edition (Neurocritical Care Society, 2021). Click an option to check it, or open <strong>Answer &amp; explanation</strong>. Each explanation links to the book page it is drawn from. Your answers are saved in this browser only.</p>
+    <p class="intro">Single-best-answer questions written to the content of <em>The Practice of Neurocritical Care</em>, 2nd Edition (Neurocritical Care Society, 2021). Click an option to check it, or open <strong>Answer &amp; explanation</strong>. Each explanation ends with the chapter and page of the book it is drawn from. Your answers are saved in this browser only.</p>
     {{CARDS}}
   </main>
 </div>
