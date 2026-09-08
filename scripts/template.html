@@ -64,15 +64,34 @@ details.answer summary{cursor:pointer;font-weight:600;color:var(--accent);paddin
 .keypoint{background:var(--summary);padding:8px 12px;border-radius:8px;margin:8px 0}
 .src{font-size:.8rem;color:var(--muted);margin:6px 0 0}
 footer{max-width:1240px;margin:40px auto;padding:0 16px;color:var(--muted);font-size:.8rem}
+.tools{display:contents}
 .menu{display:none}
-@media (max-width:860px){.layout{grid-template-columns:1fr}nav.side{position:static;max-height:none;display:none}nav.side.open{display:block}.menu{display:inline-block}details.dl .menu-box{right:auto;left:0}}
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr;padding:14px 12px}
+  .top{position:static;padding:8px 12px;gap:8px}
+  .top h1{flex:1 1 auto;font-size:1rem;line-height:1.25}
+  .top input[type=search]{flex:1 1 100%;max-width:none;order:3}
+  .menu{display:inline-block;order:2}
+  .tools{display:none;order:4;width:100%;flex-wrap:wrap;gap:8px;align-items:center;padding-top:4px;border-top:1px solid var(--line)}
+  .tools.open{display:flex}
+  nav.side{position:static;max-height:none;display:none;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px}
+  nav.side.open{display:block}
+  .top h1 span{display:none}
+  details.dl{width:100%}
+  details.dl .menu-box{position:static;width:100%;min-width:0;margin-top:6px;box-shadow:none}
+  .q{padding:14px 14px;border-radius:10px}
+  .opt{padding:8px 10px}
+  h2.chapter{font-size:1.1rem;margin-top:26px}
+}
 </style>
 </head>
 <body>
 <div class="top">
   <h1>Neurocritical Care Board Review <span style="color:var(--muted);font-weight:400">· {{COUNT}} questions</span></h1>
   <button class="menu tool" id="menu">Chapters</button>
+  <button class="menu tool" id="toolsbtn" aria-expanded="false">Tools ▾</button>
   <input type="search" id="search" placeholder="Search questions…" aria-label="Search questions">
+  <div class="tools" id="tools">
   <select id="diff" aria-label="Difficulty"><option value="">All difficulties</option><option>easy</option><option>moderate</option><option>hard</option></select>
   <span class="group" role="group" aria-label="Answers"><button id="showall">Show all answers</button><button id="hideall">Hide all</button></span>
   <span class="score" id="score"></span>
@@ -89,10 +108,12 @@ footer{max-width:1240px;margin:40px auto;padding:0 16px;color:var(--muted);font-
       <a href="downloads/NCC_Board_Review_250_Questions_with_Explanations.docx" download>Word document <small>0.2 MB</small></a>
       <a href="data/questions.json" download>Raw questions, JSON <small>0.6 MB</small></a>
       <div class="hd">Audio review</div>
-      <a href="audio/ncc_audio_summary.m4a" download>Audio summary, M4A with chapters <small>{{AUDIO_SIZE}}</small></a>
+      <a href="audio/ncc_audio_summary_bella.m4a" download>Audio, Bella (female voice), M4A with chapters <small>{{AUDIO_SIZE_BELLA}}</small></a>
+      <a href="audio/ncc_audio_summary_michael.m4a" download>Audio, Michael (male voice), M4A with chapters <small>{{AUDIO_SIZE_MICHAEL}}</small></a>
       <a href="audio/transcript.md" download>Transcript, Markdown <small>60 KB</small></a>
     </div>
   </details>
+  </div>
 </div>
 <div class="layout">
   <nav class="side" id="side"><ul>{{NAV}}</ul></nav>
@@ -167,7 +188,9 @@ footer{max-width:1240px;margin:40px auto;padding:0 16px;color:var(--muted);font-
   }
   search.addEventListener('input',filter); diff.addEventListener('change',filter);
   // mobile nav + close download menu on outside click
-  document.getElementById('menu').onclick=()=>document.getElementById('side').classList.toggle('open');
+  document.getElementById('menu').onclick=()=>{document.getElementById('side').classList.toggle('open');document.getElementById('tools').classList.remove('open')};
+  const toolsBtn=document.getElementById('toolsbtn'), tools=document.getElementById('tools');
+  toolsBtn.onclick=()=>{const on=tools.classList.toggle('open');toolsBtn.setAttribute('aria-expanded',on);toolsBtn.textContent=on?'Tools ▴':'Tools ▾';document.getElementById('side').classList.remove('open')};
   document.querySelectorAll('nav.side a').forEach(a=>a.addEventListener('click',()=>document.getElementById('side').classList.remove('open')));
   const dl=document.querySelector('details.dl');
   document.addEventListener('click',e=>{ if(dl.open && !dl.contains(e.target)) dl.open=false; });

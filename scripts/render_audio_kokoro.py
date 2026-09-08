@@ -19,6 +19,7 @@ ap.add_argument("--voice", default="af_heart")
 ap.add_argument("--speed", type=float, default=1.0)
 ap.add_argument("--src", default=str(ROOT / "audio/transcript.md"))
 ap.add_argument("--out", default=str(ROOT / "audio/ncc_audio_summary.m4a"))
+ap.add_argument("--chapters", default=str(ROOT / "audio/chapters.json"))
 ap.add_argument("--work", default=str(ROOT / "tts_work"))
 ap.add_argument("--sample", type=int, default=0)
 args = ap.parse_args()
@@ -59,7 +60,7 @@ if args.sample:
     chs = chs[: args.sample]
 
 chapter_index = []
-files, meta, t0 = [], [";FFMETADATA1", "title=Neurocritical Care Board Review Audio Summary", "artist=Kokoro TTS"], 0.0
+files, meta, t0 = [], [";FFMETADATA1", "title=Neurocritical Care Board Review Audio Summary", f"artist=Kokoro TTS voice {args.voice}"], 0.0
 for i, (title, body) in enumerate(chs):
     wav = work / f"{i:02d}.wav"
     if not wav.exists():
@@ -82,5 +83,5 @@ subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "
                 "-i", str(work / "meta.txt"), "-map_metadata", "1", "-c:a", "aac", "-b:a", "96k", args.out], check=True)
 if not args.sample:
     import json
-    json.dump(chapter_index, open(ROOT / "audio/chapters.json", "w"), indent=1)
+    json.dump(chapter_index, open(args.chapters, "w"), indent=1)
 print(f"TOTAL {t0/60:.1f} min -> {args.out}")

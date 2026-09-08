@@ -61,11 +61,13 @@ for i, q in enumerate(qs, 1):
   </details>
 </article>''')
 
-audio = ROOT / "audio/ncc_audio_summary.m4a"
-audio_size = f"{audio.stat().st_size/1e6:.0f} MB" if audio.exists() else ""
+def size_of(rel):
+    f = ROOT / rel
+    return f"{f.stat().st_size/1e6:.0f} MB" if f.exists() else ""
 out = (tpl.replace("{{NAV}}", "\n".join(nav))
           .replace("{{CARDS}}", "\n".join(cards))
           .replace("{{COUNT}}", str(len(qs)))
-          .replace("{{AUDIO_SIZE}}", audio_size))
+          .replace("{{AUDIO_SIZE_BELLA}}", size_of("audio/ncc_audio_summary_bella.m4a"))
+          .replace("{{AUDIO_SIZE_MICHAEL}}", size_of("audio/ncc_audio_summary_michael.m4a")))
 open(ROOT / "index.html", "w").write(out)
 print(f"wrote index.html with {len(qs)} questions, {len(by_chapter)} chapters")
